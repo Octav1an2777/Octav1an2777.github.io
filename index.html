@@ -340,5 +340,125 @@
             <h2 class="text-3xl font-semibold text-orange-600 mb-6 text-center">Kontakt</h2>
             <div class="bg-white rounded-lg shadow-md p-6">
                 <p class="text-lg text-gray-700 mb-4">
-                    Për çdo pyetje ose informacion shtesë, ju lutem të na kontaktoni:
-                <
+                    Për çdo pyetje ose informacion shtesë, ju lutem të na kontaktoni në adresën e mëposhtme:</p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li class="text-gray-700"><span class="font-semibold">Adresa:</span> Rruga Gjirokastër, Nr. 10, Gjirokastër, Shqipëri</li>
+                    <li class="text-gray-700"><span class="font-semibold">Tel:</span> +355 55 222 333</li>
+                    <li class="text-gray-700"><span class="font-semibold">Email:</span> info@gjirokastra.al</li>
+                    <li class="text-gray-700"><span class="font-semibold">Website:</span> www.gjirokastra.al</li>
+                </ul>
+                 <div class="mt-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">Na ndiqni në rrjetet sociale:</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/bashkiagjirokaster/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 transition duration-300" aria-label="Facebook"><i class="fab fa-facebook-f text-xl"></i></a>
+                        <a href="https://www.instagram.com/gjirokastraofficial/" target="_blank" rel="noopener noreferrer" class="text-pink-500 hover:text-pink-700 transition duration-300" aria-label="Instagram"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="https://twitter.com/visitgjirokastra" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-600 transition duration-300" aria-label="Twitter"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="https://www.youtube.com/c/VisitGjirokastra" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-800 transition duration-300" aria-label="YouTube"><i class="fab fa-youtube text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Gjirokastra - Qyteti i Gurtë. Të gjitha të drejtat e rezervuara.</p>
+        </div>
+    </footer>
+
+    <script>
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const body = document.body;
+        const mobileMenuBtn = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu a');
+        const imageGallery = document.getElementById('image-gallery');
+        const imageModal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalClose = document.getElementById('modal-close');
+
+        function toggleDarkMode() {
+            body.classList.toggle('dark-mode');
+            const icon = darkModeToggle.querySelector('i');
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        function showMobileMenu() {
+            mobileMenu.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('section');
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+            mobileNavLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+        mobileMenuBtn.addEventListener('click', showMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('hidden')) return;
+                closeMobileMenu();
+            });
+        });
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        window.addEventListener('scroll', updateActiveNavLink);
+
+        imageGallery.addEventListener('click', (event) => {
+            if (event.target.tagName === 'IMG') {
+                modalImg.src = event.target.src;
+                imageModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        modalClose.addEventListener('click', () => {
+            imageModal.style.display = 'none';
+            document.body.style.overflow = '';
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && imageModal.style.display === 'flex') {
+                imageModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html>
