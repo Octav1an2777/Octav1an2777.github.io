@@ -1,695 +1,447 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gjirokastra - Qyteti i Gurtë</title>
-    <!-- Changed font from Inter to Open Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
-          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        /* ============================================================
-           Custom CSS for animations, parallax, dark mode and more
-           ============================================================ */
-        .transition-opacity {
-            transition-property: opacity;
-            transition-duration: 0.3s;
-        }
-        .opacity-0 { opacity: 0; }
-        .opacity-100 { opacity: 100; }
-        .slide-in-left {
-            transform: translateX(-20px);
-            transition: transform 0.5s ease-out;
-        }
-        .slide-in-right {
-            transform: translateX(20px);
-            transition: transform 0.5s ease-out;
-        }
-        .slide-in-bottom {
-            transform: translateY(20px);
-            transition: transform 0.5s ease-out;
-        }
-        .scale-up {
-            transform: scale(0.9);
-            transition: transform 0.3s ease-out;
-        }
-        .scale-up:hover { transform: scale(1); }
-        /* ============================================================
-           Font Family: Open Sans
-           ============================================================ */
-        .font-open {
-            font-family: 'Open Sans', sans-serif;
-        }
-        /* ============================================================
-           Image Gallery Styles
-           ============================================================ */
-        .img-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increased size of images */
-            gap: 1.5rem; /* Increased gap */
-        }
-        .img-gallery img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .img-gallery img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        /* ============================================================
-           Modal Styles for Gallery
-           ============================================================ */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.9);
-        }
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 90%; /* Increased size of modal image */
-            max-width: 800px; /* Increased max-width */
-            animation-name: zoom;
-            animation-duration: 0.6s;
-        }
-        @keyframes zoom {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #f1f1f1;
-            font-size: 50px;
-            font-weight: bold;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-        .modal-close:hover, .modal-close:focus {
-            color: #bbb;
-            text-decoration: none;
-        }
-        @media only screen and (max-width: 800px) {
-            .modal-content { width: 100%; }
-            .modal-close {
-                font-size: 40px;
-                top: 10px;
-                right: 10px;
-            }
-        }
-        /* ============================================================
-           Parallax Effect Styles
-           ============================================================ */
-        .parallax {
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        .parallax-content {
-            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
-            padding: 4rem;
-            border-radius: 1rem;
-        }
-        /* ============================================================
-           Dark Mode Styles
-           ============================================================ */
-        .dark-mode {
-            background-color: #1a202c;
-            color: #f7fafc;
-        }
-        .dark-mode h2, .dark-mode h3, .dark-mode .text-gray-800 {
-            color: #f7fafc;
-        }
-        .dark-mode .bg-white { background-color: #2d3748; }
-        .dark-mode .shadow-md { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); }
-        .dark-mode .bg-gray-100 { background-color: #242424; }
-        .dark-mode .text-gray-700 { color: #e2e8f0; }
-        .dark-mode .border-gray-200 { border-color: #4a5568; }
-        .dark-mode nav a { color: #f7fafc; }
-        .dark-mode nav a:hover { color: #90caf9; }
-        .dark-mode nav a.active { color: #f59e0b; }
-        .dark-mode .bg-purple-600 { background-color: #6d28d9; }
-        .dark-mode .hover\:bg-purple-700:hover { background-color: #4c1d95; }
-        .dark-mode .text-purple-600 { color: #8b5cf6; }
-        .dark-mode .bg-yellow-500 { background-color: #d97706; }
-        /* ============================================================
-           Extra Comments to Increase Line Count
-           ============================================================
-           Extra comments and blank lines follow to ensure the file exceeds 500 lines.
-           ============================================================ */
-        /* Extra Comment 1: This file uses Tailwind CSS classes along with custom CSS. */
-        /* Extra Comment 2: The parallax effect is implemented by fixing the background attachment. */
-        /* Extra Comment 3: Dark mode styles are toggled via a button in the header. */
-        /* Extra Comment 4: The image modal provides a lightbox effect for the gallery images. */
-        /* Extra Comment 5: The website is fully responsive, adapting to mobile and desktop screens. */
-        /* Extra Comment 6: All fonts are loaded from Google Fonts. */
-        /* Extra Comment 7: Icons are loaded via the Font Awesome CDN. */
-        /* Extra Comment 8: The footer is simple and centered, displaying copyright info. */
-        /* Extra Comment 9: The navigation menu is hidden on mobile and toggled via a hamburger button. */
-        /* Extra Comment 10: Additional comments and whitespace below extend file length. */
-        
-        
-        
-        
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gjirokastra - Qyteti i Gurtë | Gjirokastra ne syte e nje turisti</title>
+  <!-- Fonts: Merriweather for large texts (headings) and Open Sans for body text -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* ============================================================
+       Custom CSS for animations, parallax, dark mode, and layout adjustments
+       ============================================================ */
+    .transition-opacity {
+      transition-property: opacity;
+      transition-duration: 0.3s;
+    }
+    .opacity-0 { opacity: 0; }
+    .opacity-100 { opacity: 100; }
+    .slide-in-left {
+      transform: translateX(-20px);
+      transition: transform 0.5s ease-out;
+    }
+    .slide-in-right {
+      transform: translateX(20px);
+      transition: transform 0.5s ease-out;
+    }
+    .slide-in-bottom {
+      transform: translateY(20px);
+      transition: transform 0.5s ease-out;
+    }
+    .scale-up {
+      transform: scale(0.9);
+      transition: transform 0.3s ease-out;
+    }
+    .scale-up:hover { transform: scale(1); }
 
+    /* ============================================================
+       Font Family Settings:
+       - Headers use Merriweather, body uses Open Sans
+       ============================================================ */
+    h1, h2, h3, .font-merri { font-family: 'Merriweather', serif; }
+    body { font-family: 'Open Sans', sans-serif; }
 
+    /* ============================================================
+       Image Gallery Styles (tight layout)
+       ============================================================ */
+    .img-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .img-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .img-gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    /* Card layout: Remove extra spacing between image and texts */
+    .card-text { margin-top: 0.5rem; }
+    .card-subtext { margin-top: 0.25rem; font-size: 0.9rem; color: #6b7280; }
 
-
-
-
-        /* ============================================================
-           End of CSS Extra Comments Section
-           ============================================================ */
-    </style>
+    /* ============================================================
+       Modal Styles for Gallery
+       ============================================================ */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 90%;
+      max-width: 800px;
+      animation-name: zoom;
+      animation-duration: 0.6s;
+    }
+    @keyframes zoom {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #f1f1f1;
+      font-size: 50px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    .modal-close:hover, .modal-close:focus {
+      color: #bbb;
+      text-decoration: none;
+    }
+    @media only screen and (max-width: 800px) {
+      .modal-content { width: 100%; }
+      .modal-close {
+        font-size: 40px;
+        top: 10px;
+        right: 10px;
+      }
+    }
+    /* ============================================================
+       Parallax Effect Styles (smaller height and centered)
+       ============================================================ */
+    .parallax {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    /* New smaller height for parallax sections */
+    .parallax-small { height: 300px; }
+    
+    /* ============================================================
+       Dark Mode Styles with Accent Colors
+       ============================================================ */
+    .dark-mode {
+      background-color: #1a202c;
+      color: #f7fafc;
+    }
+    .dark-mode h2, .dark-mode h3, .dark-mode .text-gray-800 {
+      color: #f7fafc;
+    }
+    .dark-mode .bg-white { background-color: #2d3748; }
+    .dark-mode .shadow-md { box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
+    .dark-mode .bg-gray-100 { background-color: #242424; }
+    .dark-mode .text-gray-700 { color: #e2e8f0; }
+    .dark-mode .border-gray-200 { border-color: #4a5568; }
+    .dark-mode nav a { color: #f7fafc; }
+    .dark-mode nav a:hover { color: #90caf9; }
+    .dark-mode nav a.active { color: #f59e0b; }
+    .dark-mode .bg-purple-600 { background-color: #6d28d9; }
+    .dark-mode .hover\:bg-purple-700:hover { background-color: #4c1d95; }
+    .dark-mode .text-purple-600 { color: #8b5cf6; }
+    .dark-mode .bg-yellow-500 { background-color: #d97706; }
+    /* ============================================================
+       Extra Functional Comments (minimal filler, only functional code)
+       ============================================================ */
+    /* End of functional CSS modifications */
+  </style>
 </head>
-<body class="bg-gray-100 font-open">
-    <!-- Header Section -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="#" class="text-xl font-semibold text-gray-800">Gjirokastra</a>
-            <nav class="hidden md:block">
-                <ul class="flex space-x-6">
-                    <li><a href="#reth-gjirokastres" class="hover:text-blue-600 transition duration-300 text-blue-600">Rreth Gjirokastrës</a></li>
-                    <li><a href="#historia" class="hover:text-purple-600 transition duration-300 text-gray-700">Historia</a></li>
-                    <li><a href="#atraksionet" class="hover:text-green-600 transition duration-300 text-gray-700">Atraksionet</a></li>
-                    <li><a href="#kultura-traditat" class="hover:text-yellow-500 transition duration-300 text-gray-700">Kultura & Traditat</a></li>
-                    <li><a href="#galeria" class="hover:text-pink-600 transition duration-300 text-gray-700">Galeria</a></li>
-                    <li><a href="#ngjarjet" class="hover:text-teal-600 transition duration-300 text-gray-700">Ngjarjet</a></li>
-                    <li><a href="#kontakt" class="hover:text-orange-600 transition duration-300 text-gray-700">Kontakt</a></li>
-                </ul>
-            </nav>
-            <div class="flex items-center gap-4">
-                <button id="dark-mode-toggle" class="focus:outline-none" aria-label="Toggle Dark Mode">
-                    <i class="fas fa-moon text-xl text-gray-700"></i>
-                </button>
-                <button id="hamburger-btn" class="md:hidden text-gray-700 focus:outline-none" aria-label="Menu">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Mobile Menu Section -->
-    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 z-50">
-        <div class="bg-white w-80 h-full absolute right-0 p-6">
-            <div class="flex justify-end mb-4">
-                <button id="close-menu-btn" class="text-gray-700 focus:outline-none" aria-label="Close Menu">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <nav class="block">
-                <ul class="space-y-4">
-                    <li><a href="#reth-gjirokastres" class="block text-lg text-blue-600 hover:text-blue-800 transition duration-300">Rreth Gjirokastrës</a></li>
-                    <li><a href="#historia" class="block text-lg text-purple-600 hover:text-purple-800 transition duration-300">Historia</a></li>
-                    <li><a href="#atraksionet" class="block text-lg text-green-600 hover:text-green-800 transition duration-300">Atraksionet</a></li>
-                    <li><a href="#kultura-traditat" class="block text-lg text-yellow-500 hover:text-yellow-700 transition duration-300">Kultura & Traditat</a></li>
-                    <li><a href="#galeria" class="block text-lg text-pink-600 hover:text-pink-800 transition duration-300">Galeria</a></li>
-                    <li><a href="#ngjarjet" class="block text-lg text-teal-600 hover:text-teal-800 transition duration-300">Ngjarjet</a></li>
-                    <li><a href="#kontakt" class="block text-lg text-orange-600 hover:text-orange-800 transition duration-300">Kontakt</a></li>
-                </ul>
-            </nav>
-        </div>
+<body>
+  <!-- Header Section -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="#" class="text-xl font-merri text-gray-800">Gjirokastra</a>
+      <nav class="hidden md:block">
+        <ul class="flex space-x-6">
+          <li><a href="#reth-gjirokastres" class="hover:text-blue-600 transition duration-300 text-blue-600">Rreth Gjirokastrës</a></li>
+          <li><a href="#historia" class="hover:text-purple-600 transition duration-300 text-gray-700">Historia</a></li>
+          <li><a href="#atraksionet" class="hover:text-green-600 transition duration-300 text-gray-700">Atraksionet</a></li>
+          <li><a href="#kultura-traditat" class="hover:text-yellow-500 transition duration-300 text-gray-700">Kultura & Traditat</a></li>
+          <li><a href="#galeria" class="hover:text-pink-600 transition duration-300 text-gray-700">Galeria</a></li>
+          <li><a href="#ngjarjet" class="hover:text-teal-600 transition duration-300 text-gray-700">Ngjarjet</a></li>
+          <li><a href="#kontakt" class="hover:text-orange-600 transition duration-300 text-gray-700">Kontakt</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-4">
+        <button id="dark-mode-toggle" class="focus:outline-none" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon text-xl text-gray-700"></i>
+        </button>
+        <button id="hamburger-btn" class="md:hidden text-gray-700 focus:outline-none" aria-label="Menu">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <!-- Main Content Start -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- Rreth Gjirokastrës Section -->
-        <section id="reth-gjirokastres" class="mb-16">
-            <h2 class="text-3xl font-semibold text-blue-600 mb-6 text-center">Rreth Gjirokastrës</h2>
-            <div class="flex flex-col md:flex-row gap-8 items-center">
-                <div class="md:w-1/2">
-                     <!-- Adjusted parallax height to 350px -->
-                     <div class="parallax" style="background-image: url('https://lp-cms-production.imgix.net/2019-06/380c31dca35ec34cfd3e45114b03c5b3-gjirokastra.jpg?w=1920&h=640&fit=crop&crop=faces%2Cedges&auto=format&q=75'); height: 350px;"></div>
-                </div>
-                <div class="md:w-1/2 text-gray-700">
-                    <p class="mb-4">
-                        Gjirokastra, e njohur ndryshe si Qyteti i Gurtë, është një qytet në Shqipërinë e Jugut, i rrethuar nga malet e Gjerë dhe i Shtatë. Njihet për arkitekturën e veçantë me shtëpi prej guri, çati të rëndë dhe fasada të bardha. Qyteti është pjesë e Trashëgimisë Botërore të UNESCO-s, duke e bërë një destinacion të rëndësishëm turistik.
-                    </p>
-                    <p class="mb-4">
-                        Përveç kësaj, Gjirokastra ofron një panoramë të mrekullueshme të historisë dhe kulturës shqiptare, duke mbushur çdo cep me histori dhe tradita të pasura.
-                    </p>
-                </div>
-            </div>
-        </section>
+  <!-- Mobile Menu Section -->
+  <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 z-50">
+    <div class="bg-white w-80 h-full absolute right-0 p-6">
+      <div class="flex justify-end mb-4">
+        <button id="close-menu-btn" class="text-gray-700 focus:outline-none" aria-label="Close Menu">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <nav class="block">
+        <ul class="space-y-4">
+          <li><a href="#reth-gjirokastres" class="block text-lg text-blue-600 hover:text-blue-800 transition duration-300">Rreth Gjirokastrës</a></li>
+          <li><a href="#historia" class="block text-lg text-purple-600 hover:text-purple-800 transition duration-300">Historia</a></li>
+          <li><a href="#atraksionet" class="block text-lg text-green-600 hover:text-green-800 transition duration-300">Atraksionet</a></li>
+          <li><a href="#kultura-traditat" class="block text-lg text-yellow-500 hover:text-yellow-700 transition duration-300">Kultura & Traditat</a></li>
+          <li><a href="#galeria" class="block text-lg text-pink-600 hover:text-pink-800 transition duration-300">Galeria</a></li>
+          <li><a href="#ngjarjet" class="block text-lg text-teal-600 hover:text-teal-800 transition duration-300">Ngjarjet</a></li>
+          <li><a href="#kontakt" class="block text-lg text-orange-600 hover:text-orange-800 transition duration-300">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
-        <!-- Historia Section -->
-        <section id="historia" class="mb-16">
-            <h2 class="text-3xl font-semibold text-purple-600 mb-6 text-center">Historia</h2>
-             <div class="flex flex-col md:flex-row gap-8 items-center">
-                <div class="md:w-1/2 text-gray-700">
-                    <p class="mb-4">
-                        Historia e Gjirokastrës daton që nga shekulli i 4-t p.e.s., si një qendër e rëndësishme e fisit ilir të Kaonëve. Më vonë, qyteti u bë pjesë e Perandorisë Romake, Bizantine dhe Osmane, duke lënë gjurmë të thella në kulturën dhe arkitekturën e tij.
-                    </p>
-                    <p class="mb-4">
-                        Kalaja e Gjirokastrës, e ndërtuar në shekullin e 12-të, ka kaluar shumë ndryshime dhe zgjerime gjatë shekujve. Sot, ajo shërben si një simbol i qëndresës dhe trashëgimisë së qytetit, duke rrëfyer historinë përmes mureve të saj.
-                    </p>
-                </div>
-                <div class="md:w-1/2">
-                    <!-- Adjusted parallax height to 350px -->
-                    <div class="parallax" style="background-image: url('https://pine.al/uploads/images/2022/08/09/62f2cb31f2c68-gjirokastra-kalaja.jpg'); height: 350px;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Atraksionet Section -->
-        <section id="atraksionet" class="mb-16">
-            <h2 class="text-3xl font-semibold text-green-600 mb-6 text-center">Atraksionet</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between transition-transform transform hover:scale-105">
-                    <img src="https://odeacademy.org/wp-content/uploads/2019/07/kalaja-e-gjirokastres.jpg" alt="Kalaja" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-green-600">Kalaja e Gjirokastrës</h3>
-                    <p class="text-gray-700">Një kala madhështore që ofron pamje panoramike të qytetit.</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between transition-transform transform hover:scale-105">
-                    <!-- Replaced base64 image with provided link -->
-                    <img src="https://pasqyrimi.wordpress.com/wp-content/uploads/2016/11/enver.jpg" alt="Muzeu Etnografik" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-green-600">Muzeu Etnografik</h3>
-                    <p class="text-gray-700">Prezantimi i traditave dhe kulturës lokale.</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between transition-transform transform hover:scale-105">
-                    <img src="https://www.nomads-travel-guide.com/wp-content/uploads/2020/02/Skenduli-House-Gjirokastra.jpg" alt="Shtëpia e Skëndulit" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-green-600">Shtëpia e Skëndulit</h3>
-                    <p class="text-gray-700">Një shembull i arkitekturës tradicionale të Gjirokastrës.</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between transition-transform transform hover:scale-105">
-                    <img src="https://www.iett.al/wp-content/uploads/2020/12/Gjirokaster_Mosque_-_Mosques_in_Albania-1.jpg" alt="Xhamia e Pazarit" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-green-600">Xhamia e Pazarit</h3>
-                    <p class="text-gray-700">Një nga xhamitë historike të qytetit.</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between transition-transform transform hover:scale-105">
-                    <img src="https://sandaltanman.com/wp-content/uploads/2021/08/Gjiro10-1-1024x768.jpg" alt="Pazari i Vjetër" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-green-600">Pazari i Vjetër</h3>
-                    <p class="text-gray-700">Tregu tradicional ku mund të gjeni produkte lokale dhe suvenire.</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between transition-transform transform hover:scale-105">
-                    <img src="https://rtsh24.s3.eu-central-1.amazonaws.com/2024/08/e84bdd973832411f9b31ea81c5c2a052.png" alt="Tuneli i Luftës së Ftohtë" class="rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-green-600">Tuneli i Luftës së Ftohtë</h3>
-                    <p class="text-gray-700">Një tunel nëntokësor që ofron një vështrim në historinë e Luftës së Ftohtë.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Kultura & Traditat Section -->
-        <section id="kultura-traditat" class="mb-16">
-            <h2 class="text-3xl font-semibold text-yellow-500 mb-6 text-center">Kultura & Traditat</h2>
-            <div class="flex flex-col md:flex-row gap-8 items-center">
-                <div class="md:w-1/2">
-                    <!-- Adjusted parallax height to 350px -->
-                    <div class="parallax" style="background-image: url('https://top-channel.tv/wp-content/uploads/2023/07/Untitled-design-49.jpg'); height: 350px;"></div>
-                </div>
-                <div class="md:w-1/2 text-gray-700">
-                    <p class="mb-4">
-                        Gjirokastra është e njohur për traditat e saj të pasura kulturore, duke përfshirë muzikën, veshjet dhe festivalet. Festivali Folklorik Kombëtar sjell artistë nga e gjithë Shqipëria dhe jashtë, duke promovuar artin popullor dhe traditat e lashta.
-                    </p>
-                    <p class="mb-4">
-                        Qyteti krenohet me traditën e polifonisë, një stil unik i muzikës popullore shqiptare që është pjesë e Trashëgimisë Kulturore Jo-materiale të UNESCO-s. Vizitorët shijojnë koncerte dhe shfaqje në ambientet autentike të qytetit.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Galeria Section -->
-        <section id="galeria" class="mb-16">
-            <h2 class="text-3xl font-semibold text-pink-600 mb-6 text-center">Galeria</h2>
-            <div class="img-gallery" id="image-gallery">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx_iVcx63lOMe8ywV-EPaqQvi42z1SFLwvMg&s" alt="Gjirokastra 1">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2ahtq79CR1TrMFcsKqQ6PQkVRwtuWCjddlQ&s" alt="Gjirokastra 2">
-                <img src="https://www.balkanweb.com/wp-content/uploads/2024/04/Kalaja-e-Gjirokastres-770x408.jpg" alt="Gjirokastra 3">
-                <img src="https://albaniatravelguide.net/wp-content/uploads/2020/02/Gjirokastra-hrad-3-JH.jpg" alt="Gjirokastra 4">
-                <img src="https://www.tiranatimes.com/wp-content/uploads/2017/06/gjirokastra-890x395_c.jpg" alt="Gjirokastra 5">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIpLXh2nrP8lU1psAhiBZAjLVtxZt1WhKLjg&s" alt="Gjirokastra 6">
-            </div>
-            <div id="image-modal" class="modal">
-                <span class="modal-close" id="modal-close">&times;</span>
-                <img class="modal-content" id="modal-img">
-            </div>
-        </section>
-
-        <!-- Ngjarjet Section -->
-        <section id="ngjarjet" class="mb-16">
-            <h2 class="text-3xl font-semibold text-teal-600 mb-6 text-center">Ngjarjet</h2>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Ngjarjet e Ardhshme</h3>
-                <ul class="list-disc list-inside text-gray-700">
-                    <li>Shfaqje kulturore dhe muzikore tradicionale</li>
-                    <li>Ekspozita të artizanatit lokal</li>
-                    <li>Turne sportive dhe aktivitete komunitare</li>
-                    <li>Fushata për promovimin e trashëgimisë kulturore</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Kontakt Section -->
-        <section id="kontakt" class="mb-16">
-            <h2 class="text-3xl font-semibold text-orange-600 mb-6 text-center">Kontakt</h2>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <p class="text-gray-700">
-                    Për pyetje ose informata të mëtejshme, na kontaktoni në:
-                </p>
-                <p class="text-gray-700 mt-2">
-                    Email: info@gjirokastra.al<br>
-                    Telefoni: +355 12 345 678
-                </p>
-            </div>
-        </section>
-
-        <!-- New Map Section Added -->
-        <section id="map" class="mb-16">
-            <h2 class="text-3xl font-semibold text-indigo-600 mb-6 text-center">Lokacioni në Hartë</h2>
-            <div class="w-full h-96">
-                <!-- Embedded OpenStreetMap iframe -->
-                <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
-                    src="https://www.openstreetmap.org/export/embed.html?bbox=20.125%2C40.075%2C20.165%2C40.105&amp;layer=mapnik&amp;marker=40.09%2C20.145" 
-                    style="border: 1px solid #ccc">
-                </iframe>
-                <br/>
-                <small>
-                    <a href="https://www.openstreetmap.org/?mlat=40.09&amp;mlon=20.145#map=15/40.09/20.145">
-                        Shiko në OpenStreetMap
-                    </a>
-                </small>
-            </div>
-        </section>
-    </main>
-    <!-- Main Content End -->
-
-    <!-- Footer Section -->
-    <footer class="bg-white shadow-md py-4">
-        <div class="container mx-auto px-4 text-center text-gray-700">
-            © 2024 Gjirokastra - Të gjitha të drejtat e rezervuara.
+  <!-- Main Content Start -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Rreth Gjirokastrës Section -->
+    <section id="reth-gjirokastres" class="mb-16">
+      <h2 class="text-3xl font-merri text-blue-600 mb-6 text-center">Rreth Gjirokastrës</h2>
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="md:w-1/2">
+          <!-- Parallax image adjusted with class parallax-small -->
+          <div class="parallax parallax-small" style="background-image: url('https://lp-cms-production.imgix.net/2019-06/380c31dca35ec34cfd3e45114b03c5b3-gjirokastra.jpg?w=1920&h=640&fit=crop&crop=faces%2Cedges&auto=format&q=75');"></div>
         </div>
-    </footer>
+        <div class="md:w-1/2 text-gray-700">
+          <p class="mb-4">
+            Gjirokastra, e njohur ndryshe si Qyteti i Gurtë, është një qytet në Shqipërinë e Jugut, i rrethuar nga malet e Gjerë. Njihet për arkitekturën e veçantë me shtëpi prej guri, çati të rëndë dhe fasada të bardha. Trashëgimia e UNESCO-s e bën këtë vend të paharrueshëm.
+          </p>
+          <p class="mb-4">
+            Qyteti rrëfen historinë e tij përmes çdo rrugë, duke ofruar një eksperiencë autentike kulturore për çdo turist.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <!-- ============================================================
-         JavaScript Section: Dark Mode, Mobile Menu, and Image Modal
-         ============================================================ -->
-    <script>
-        // Toggle Dark Mode
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
+    <!-- Historia Section -->
+    <section id="historia" class="mb-16">
+      <h2 class="text-3xl font-merri text-purple-600 mb-6 text-center">Historia</h2>
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="md:w-1/2 text-gray-700">
+          <p class="mb-4">
+            Historia e Gjirokastrës daton që nga shekulli i 4-t p.e.s., si një qendër e rëndësishme e fisit ilir të Kaonëve. Më vonë, qyteti u bë pjesë e Perandorisë Romake, Bizantine dhe Osmane, duke lënë gjurmë të thella në kulturën dhe arkitekturën e tij.
+          </p>
+          <p class="mb-4">
+            Kalaja e Gjirokastrës, e ndërtuar në shekullin e 12-të, është dëshmi e ndryshimeve historike dhe shërben sot si simbol i krenarisë kulturore.
+          </p>
+        </div>
+        <div class="md:w-1/2">
+          <!-- Parallax image with smaller height -->
+          <div class="parallax parallax-small" style="background-image: url('https://pine.al/uploads/images/2022/08/09/62f2cb31f2c68-gjirokastra-kalaja.jpg');"></div>
+        </div>
+      </div>
+    </section>
 
-        // Mobile Menu Toggle
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-        hamburgerBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
-        });
-        closeMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-        });
+    <!-- Atraksionet Section -->
+    <section id="atraksionet" class="mb-16">
+      <h2 class="text-3xl font-merri text-green-600 mb-6 text-center">Atraksionet</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Each card now has main text and a small subtext -->
+        <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+          <img src="https://odeacademy.org/wp-content/uploads/2019/07/kalaja-e-gjirokastres.jpg" alt="Kalaja" class="rounded-lg mb-2">
+          <h3 class="text-xl font-merri text-green-600">Kalaja e Gjirokastrës</h3>
+          <p class="card-text text-gray-700">Një kala madhështore që ofron pamje panoramike të qytetit.</p>
+          <p class="card-subtext">Historitë e lashta dhe tregimet e betejave përballen këtu.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+          <!-- Replaced base64 image with provided link -->
+          <img src="https://pasqyrimi.wordpress.com/wp-content/uploads/2016/11/enver.jpg" alt="Muzeu Etnografik" class="rounded-lg mb-2">
+          <h3 class="text-xl font-merri text-green-600">Muzeu Etnografik</h3>
+          <p class="card-text text-gray-700">Prezantimi i traditave dhe kulturës lokale.</p>
+          <p class="card-subtext">Eksponate që tregojnë jetën tradicionale shqiptare.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+          <img src="https://www.nomads-travel-guide.com/wp-content/uploads/2020/02/Skenduli-House-Gjirokastra.jpg" alt="Shtëpia e Skëndulit" class="rounded-lg mb-2">
+          <h3 class="text-xl font-merri text-green-600">Shtëpia e Skëndulit</h3>
+          <p class="card-text text-gray-700">Një shembull i arkitekturës tradicionale të Gjirokastrës.</p>
+          <p class="card-subtext">Ambienti i ngrohtë dhe detajet tradicionale shfaqen këtu.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+          <img src="https://www.iett.al/wp-content/uploads/2020/12/Gjirokaster_Mosque_-_Mosques_in_Albania-1.jpg" alt="Xhamia e Pazarit" class="rounded-lg mb-2">
+          <h3 class="text-xl font-merri text-green-600">Xhamia e Pazarit</h3>
+          <p class="card-text text-gray-700">Një nga xhamitë historike të qytetit.</p>
+          <p class="card-subtext">Arti dhe feja bashkëjetojnë në këtë monument.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+          <img src="https://sandaltanman.com/wp-content/uploads/2021/08/Gjiro10-1-1024x768.jpg" alt="Pazari i Vjetër" class="rounded-lg mb-2">
+          <h3 class="text-xl font-merri text-green-600">Pazari i Vjetër</h3>
+          <p class="card-text text-gray-700">Tregu tradicional ku mund të gjeni produkte lokale dhe suvenire.</p>
+          <p class="card-subtext">Një ambient i gjallë me aromat e gatimeve tradicionale.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+          <img src="https://rtsh24.s3.eu-central-1.amazonaws.com/2024/08/e84bdd973832411f9b31ea81c5c2a052.png" alt="Tuneli i Luftës së Ftohtë" class="rounded-lg mb-2">
+          <h3 class="text-xl font-merri text-green-600">Tuneli i Luftës së Ftohtë</h3>
+          <p class="card-text text-gray-700">Një tunel nëntokësor që ofron një vështrim në historinë e Luftës së Ftohtë.</p>
+          <p class="card-subtext">Eksponat që rrëfejnë sfidat dhe strategjitë e periudhës.</p>
+        </div>
+      </div>
+    </section>
 
-        // Image Modal Functionality
-        const images = document.querySelectorAll('#image-gallery img');
-        const modal = document.getElementById('image-modal');
-        const modalImg = document.getElementById('modal-img');
-        const modalClose = document.getElementById('modal-close');
+    <!-- Kultura & Traditat Section -->
+    <section id="kultura-traditat" class="mb-16">
+      <h2 class="text-3xl font-merri text-yellow-500 mb-6 text-center">Kultura & Traditat</h2>
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="md:w-1/2">
+          <!-- Adjusted parallax height to 350px -->
+          <div class="parallax parallax-small" style="background-image: url('https://top-channel.tv/wp-content/uploads/2023/07/Untitled-design-49.jpg');"></div>
+        </div>
+        <div class="md:w-1/2 text-gray-700">
+          <p class="mb-4">
+            Gjirokastra është e njohur për traditat e saj të pasura kulturore, duke përfshirë muzikën, veshjet dhe festivalet. Festivali Folklorik Kombëtar sjell artistë nga e gjithë Shqipëria dhe jashtë, duke promovuar artin popullor dhe traditat e lashta.
+          </p>
+          <p class="mb-4">
+            Qyteti krenohet me traditën e polifonisë, një stil unik i muzikës popullore shqiptare, pjesë e Trashëgimisë Kulturore Jo-materiale të UNESCO-s. Koncertet dhe shfaqjet në ambientet autentike krijojnë një lidhje të thellë midis së kaluarës dhe të së tashmes.
+          </p>
+        </div>
+      </div>
+    </section>
 
-        images.forEach(img => {
-            img.addEventListener('click', () => {
-                modal.style.display = "block";
-                modalImg.src = img.src;
-            });
-        });
+    <!-- Galeria Section -->
+    <section id="galeria" class="mb-16">
+      <h2 class="text-3xl font-merri text-pink-600 mb-6 text-center">Galeria</h2>
+      <div class="img-gallery" id="image-gallery">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx_iVcx63lOMe8ywV-EPaqQvi42z1SFLwvMg&s" alt="Gjirokastra 1">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2ahtq79CR1TrMFcsKqQ6PQkVRwtuWCjddlQ&s" alt="Gjirokastra 2">
+        <img src="https://www.balkanweb.com/wp-content/uploads/2024/04/Kalaja-e-Gjirokastres-770x408.jpg" alt="Gjirokastra 3">
+        <img src="https://albaniatravelguide.net/wp-content/uploads/2020/02/Gjirokastra-hrad-3-JH.jpg" alt="Gjirokastra 4">
+        <img src="https://www.tiranatimes.com/wp-content/uploads/2017/06/gjirokastra-890x395_c.jpg" alt="Gjirokastra 5">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIpLXh2nrP8lU1psAhiBZAjLVtxZt1WhKLjg&s" alt="Gjirokastra 6">
+      </div>
+      <div id="image-modal" class="modal">
+        <span class="modal-close" id="modal-close">&times;</span>
+        <img class="modal-content" id="modal-img">
+      </div>
+    </section>
 
-        modalClose.addEventListener('click', () => {
-            modal.style.display = "none";
-        });
+    <!-- Ngjarjet Section -->
+    <section id="ngjarjet" class="mb-16">
+      <h2 class="text-3xl font-merri text-teal-600 mb-6 text-center">Ngjarjet</h2>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-merri text-gray-800 mb-4">Ngjarjet e Ardhshme</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Shfaqje kulturore dhe muzikore tradicionale</li>
+          <li>Ekspozita të artizanatit lokal</li>
+          <li>Turne sportive dhe aktivitete komunitare</li>
+          <li>Fushata për promovimin e trashëgimisë kulturore</li>
+        </ul>
+      </div>
+    </section>
 
-        // Extra JavaScript Comments for Increased Line Count
-        // Comment 1: All event listeners are added after the DOM is loaded.
-        // Comment 2: The dark mode toggler changes the body class to switch themes.
-        // Comment 3: The mobile menu is hidden by default and shown on hamburger click.
-        // Comment 4: The image modal uses a simple display toggle to show enlarged images.
-        // Comment 5: This section could be extended with more functionality as needed.
-        // Comment 6: Additional whitespace and comments ensure the file exceeds 500 lines.
-        // Comment 7: This file is designed to be as non-intrusive as possible to your original code.
-        // Comment 8: All modifications have been added without removing any original functionality.
-        // Comment 9: The map section is fully responsive and integrates with OpenStreetMap.
-        // Comment 10: Thank you for trusting me with your code modifications.
-        
-        // Additional blank lines for file length:
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    </script>
-    <!-- End of JavaScript Section -->
+    <!-- YouTube Videos Section -->
+    <section id="videos" class="mb-16">
+      <h2 class="text-3xl font-merri text-indigo-600 mb-6 text-center">Video Turistike</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-lg overflow-hidden shadow-md">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/edudFYKAsz0?si=PWG_c24V2MyzWC28" 
+                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen></iframe>
+          <div class="p-4">
+            <h3 class="text-xl font-merri text-gray-800">Tur Gjirokastra - Video 1</h3>
+            <p class="text-gray-700">Një video që tregon bukuritë dhe historinë e Gjirokastrës.</p>
+          </div>
+        </div>
+        <div class="rounded-lg overflow-hidden shadow-md">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/hhDw7rngh7s?si=zR0NDaUXKF4sp95F" 
+                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen></iframe>
+          <div class="p-4">
+            <h3 class="text-xl font-merri text-gray-800">Tur Gjirokastra - Video 2</h3>
+            <p class="text-gray-700">Një tjetër video për një vështrim më të thellë në kulturën e Gjirokastrës.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontakt Section -->
+    <section id="kontakt" class="mb-16">
+      <h2 class="text-3xl font-merri text-orange-600 mb-6 text-center">Kontakt</h2>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <p class="text-gray-700">
+          Për pyetje ose informata të mëtejshme, na kontaktoni në:
+        </p>
+        <p class="text-gray-700 mt-2">
+          Email: info@gjirokastra.al<br>
+          Telefoni: +355 12 345 678
+        </p>
+      </div>
+    </section>
+
+    <!-- New Map Section Added -->
+    <section id="map" class="mb-16">
+      <h2 class="text-3xl font-merri text-indigo-600 mb-6 text-center">Lokacioni në Hartë</h2>
+      <div class="w-full h-96">
+        <!-- Embedded OpenStreetMap iframe -->
+        <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
+                src="https://www.openstreetmap.org/export/embed.html?bbox=20.125%2C40.075%2C20.165%2C40.105&amp;layer=mapnik&amp;marker=40.09%2C20.145" 
+                style="border: 1px solid #ccc"></iframe>
+        <br/>
+        <small>
+          <a href="https://www.openstreetmap.org/?mlat=40.09&amp;mlon=20.145#map=15/40.09/20.145">
+            Shiko në OpenStreetMap
+          </a>
+        </small>
+      </div>
+    </section>
+  </main>
+  <!-- Main Content End -->
+
+  <!-- Footer Section -->
+  <footer class="bg-white shadow-md py-4">
+    <div class="container mx-auto px-4 text-center text-gray-700">
+      © 2024 Gjirokastra - Të gjitha të drejtat e rezervuara.
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JavaScript Section: Dark Mode, Mobile Menu, and Image Modal
+       ============================================================ -->
+  <script>
+    // Toggle Dark Mode with accent adjustments
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    // Mobile Menu Toggle
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    hamburgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+    });
+    closeMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+
+    // Image Modal Functionality
+    const images = document.querySelectorAll('#image-gallery img');
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalClose = document.getElementById('modal-close');
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        modal.style.display = "block";
+        modalImg.src = img.src;
+      });
+    });
+    modalClose.addEventListener('click', () => {
+      modal.style.display = "none";
+    });
+
+    // Additional functional comments (if needed, extend functionality here)
+    // End of JavaScript Section
+  </script>
 </body>
 </html>
